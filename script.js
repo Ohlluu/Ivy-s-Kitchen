@@ -221,7 +221,7 @@ function initOrderButtons() {
             setTimeout(() => {
                 // Remove loading state
                 this.classList.remove('loading');
-                this.textContent = 'Order Now - $60';
+                this.textContent = 'Create Magic Tonight - $60';
 
                 // Show success message (you can replace this with actual order flow)
                 showOrderModal();
@@ -418,7 +418,179 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Initialize all functionality
+// Magical Interactive Elements
+function createFloatingStars() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    // Create floating stars that respond to mouse movement
+    for (let i = 0; i < 20; i++) {
+        const star = document.createElement('div');
+        star.className = 'floating-star';
+        star.textContent = '⭐';
+        star.style.cssText = `
+            position: absolute;
+            font-size: ${Math.random() * 20 + 10}px;
+            color: rgba(252, 211, 77, ${Math.random() * 0.7 + 0.3});
+            pointer-events: none;
+            z-index: 3;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: floatStars ${Math.random() * 3 + 3}s ease-in-out infinite;
+            animation-delay: ${Math.random() * 2}s;
+        `;
+        hero.appendChild(star);
+    }
+
+    // Mouse movement parallax effect
+    hero.addEventListener('mousemove', (e) => {
+        const stars = hero.querySelectorAll('.floating-star');
+        const rect = hero.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        stars.forEach((star, index) => {
+            const speed = (index % 5 + 1) * 0.02;
+            const translateX = (x - rect.width / 2) * speed;
+            const translateY = (y - rect.height / 2) * speed;
+            star.style.transform = `translate(${translateX}px, ${translateY}px)`;
+        });
+    });
+}
+
+// Add magical sparkle effect when hovering over buttons
+function addSparkleEffects() {
+    const buttons = document.querySelectorAll('.primary-button, .final-cta-button, .order-button');
+
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', createSparkles);
+        button.addEventListener('mouseleave', removeSparkles);
+    });
+
+    function createSparkles(e) {
+        const button = e.target;
+        const sparkleCount = 8;
+
+        for (let i = 0; i < sparkleCount; i++) {
+            const sparkle = document.createElement('span');
+            sparkle.className = 'sparkle';
+            sparkle.textContent = '✨';
+            sparkle.style.cssText = `
+                position: absolute;
+                font-size: 12px;
+                color: rgba(252, 211, 77, 0.8);
+                pointer-events: none;
+                z-index: 1000;
+                animation: sparkleEffect 1s ease-out forwards;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+            `;
+            button.appendChild(sparkle);
+
+            setTimeout(() => sparkle.remove(), 1000);
+        }
+    }
+
+    function removeSparkles(e) {
+        const sparkles = e.target.querySelectorAll('.sparkle');
+        sparkles.forEach(sparkle => sparkle.remove());
+    }
+}
+
+// Add sparkle animation CSS
+const sparkleCSS = `
+    @keyframes sparkleEffect {
+        0% {
+            opacity: 0;
+            transform: scale(0) rotate(0deg);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1) rotate(180deg);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0) rotate(360deg);
+        }
+    }
+`;
+
+const sparkleStyle = document.createElement('style');
+sparkleStyle.textContent = sparkleCSS;
+document.head.appendChild(sparkleStyle);
+
+// Add gentle background music simulation with visual feedback
+function addAmbientEffects() {
+    const features = document.querySelectorAll('.feature-card');
+
+    features.forEach((card, index) => {
+        card.addEventListener('mouseenter', () => {
+            // Add gentle glow effect
+            card.style.boxShadow = `
+                0 25px 60px rgba(107, 70, 193, 0.3),
+                0 0 40px rgba(252, 211, 77, 0.5),
+                inset 0 0 30px rgba(252, 211, 77, 0.1)
+            `;
+
+            // Trigger gentle pulse animation
+            card.style.animation = 'gentleGlow 2s ease-in-out infinite';
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.boxShadow = '';
+            card.style.animation = '';
+        });
+    });
+}
+
+// Create constellation pattern in background
+function createConstellation() {
+    const hero = document.querySelector('.hero');
+    if (!hero) return;
+
+    // Create constellation lines
+    for (let i = 0; i < 5; i++) {
+        const line = document.createElement('div');
+        line.className = 'constellation-line';
+        line.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 200 + 50}px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(252, 211, 77, 0.4), transparent);
+            top: ${Math.random() * 80 + 10}%;
+            left: ${Math.random() * 80 + 10}%;
+            transform: rotate(${Math.random() * 360}deg);
+            animation: twinkle 4s ease-in-out infinite;
+            animation-delay: ${Math.random() * 2}s;
+            z-index: 1;
+        `;
+        hero.appendChild(line);
+    }
+}
+
+// Story book page turn effect for testimonials
+function addStoryBookEffects() {
+    const testimonials = document.querySelectorAll('.testimonial');
+
+    testimonials.forEach(testimonial => {
+        testimonial.addEventListener('mouseenter', () => {
+            testimonial.style.transform = 'rotateY(-5deg) translateZ(20px)';
+            testimonial.style.boxShadow = '0 20px 40px rgba(107, 70, 193, 0.3)';
+        });
+
+        testimonial.addEventListener('mouseleave', () => {
+            testimonial.style.transform = '';
+            testimonial.style.boxShadow = '';
+        });
+    });
+}
+
+// Initialize all magical functionality
+createFloatingStars();
+addSparkleEffects();
+addAmbientEffects();
+createConstellation();
+addStoryBookEffects();
 initOrderButtons();
 
 // Form validation (if contact forms are added later)
