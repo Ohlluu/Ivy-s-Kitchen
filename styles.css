@@ -200,10 +200,11 @@ p {
 /* Hero Section - Magical Storytelling Theme */
 .hero {
     padding: calc(80px + var(--space-xl)) var(--space-sm) var(--space-3xl);
-    background: linear-gradient(135deg, #1a1a2e 0%, var(--dark-purple) 50%, var(--primary-purple) 100%);
+    background: linear-gradient(135deg, #1a1a2e 0%, #4C1D95 50%, #6B46C1 100%) !important;
     position: relative;
     overflow: hidden;
-    color: var(--white);
+    color: var(--white) !important;
+    min-height: 100vh;
 }
 
 .hero::before {
