@@ -809,6 +809,16 @@ p {
     background: var(--light-gray);
     padding: var(--space-xl);
     border-radius: 15px;
+    width: 140%;
+    margin-left: -20%;
+    max-width: none;
+}
+
+@media (min-width: 768px) {
+    .whats-included {
+        width: 100%;
+        margin-left: 0;
+    }
 }
 
 .whats-included h4 {
