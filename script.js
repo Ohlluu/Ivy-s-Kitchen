@@ -221,7 +221,7 @@ function initOrderButtons() {
             setTimeout(() => {
                 // Remove loading state
                 this.classList.remove('loading');
-                this.textContent = 'Order Now - $199';
+                this.textContent = 'Order Now - $60';
 
                 // Show success message (you can replace this with actual order flow)
                 showOrderModal();
