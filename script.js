@@ -221,7 +221,7 @@ function initOrderButtons() {
             setTimeout(() => {
                 // Remove loading state
                 this.classList.remove('loading');
-                this.textContent = 'Create Magic Tonight - $60';
+                this.textContent = 'Transform Your Life - $60';
 
                 // Show success message (you can replace this with actual order flow)
                 showOrderModal();
