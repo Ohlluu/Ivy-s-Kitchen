@@ -17,8 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Stripe configuration
-$stripe_secret_key = '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';
+// Stripe configuration - load from config file
+$config_file = __DIR__ . '/config.php';
+if (file_exists($config_file)) {
+    $config = include $config_file;
+    $stripe_secret_key = $config['stripe_secret_key'];
+} else {
+    // Fallback - you need to create config.php from config-example.php
+    die(json_encode(['error' => 'Configuration file not found. Please create config.php from config-example.php']));
+}
 
 // Initialize cURL
 $curl = curl_init();

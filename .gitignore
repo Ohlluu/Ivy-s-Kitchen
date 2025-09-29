@@ -1,0 +1,22 @@
+# Stripe Configuration
+config.php
+stripe-config.js
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Mac system files
+.DS_Store
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp

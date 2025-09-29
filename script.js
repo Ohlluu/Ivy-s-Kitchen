@@ -207,8 +207,8 @@ document.querySelectorAll('.feature-card, .testimonial, .step, .faq-item').forEa
     observer.observe(el);
 });
 
-// Initialize Stripe
-const stripe = Stripe('pk_live_51S3dDgRw4zEcHSf9D4tZ5fpKSogmyAQzsoYB0PTAvDJCbWbU0oQ86Zn6eJftX9qT9kJnSyaVninTDMEgZ1tHksio00nRSm2K3p');
+// Initialize Stripe using config
+const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
 // Order button functionality with real Stripe integration
 function initOrderButtons() {
