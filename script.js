@@ -207,10 +207,7 @@ document.querySelectorAll('.feature-card, .testimonial, .step, .faq-item').forEa
     observer.observe(el);
 });
 
-// Initialize Stripe with your publishable key
-const stripe = Stripe('pk_live_51S3dDgRw4zEcHSf9D4tZ5fpKSogmyAQzsoYB0PTAvDJCbWbU0oQ86Zn6eJftX9qT9kJnSyaVninTDMEgZ1tHksio00nRSm2K3p');
-
-// Order button functionality - direct Stripe checkout
+// Order button functionality - Simple redirect approach for GitHub Pages
 function initOrderButtons() {
     const orderButtons = document.querySelectorAll('.primary-button, .order-button, .final-cta-button, .mobile-cta-button');
 
@@ -223,43 +220,28 @@ function initOrderButtons() {
             const originalText = this.textContent;
             this.textContent = 'Redirecting to checkout...';
 
-            // Direct Stripe checkout - works on GitHub Pages
-            stripe.redirectToCheckout({
-                lineItems: [{
-                    price_data: {
-                        currency: 'usd',
-                        product_data: {
-                            name: 'Little Light Bible Projector - Adult Version',
-                            description: '13 theme-based Bible stories, personal affirmations & prayers + FREE gifts (journal, affirmation cards, sticky notes) for first 200 orders',
-                            images: ['https://ohlluu.github.io/Ivy-s-Kitchen/38F59C79-196C-42CB-8B31-46401F223947.PNG']
-                        },
-                        unit_amount: 6299, // $62.99 in cents
-                    },
-                    quantity: 1,
-                }],
-                mode: 'payment',
-                success_url: 'https://ohlluu.github.io/Ivy-s-Kitchen/success.html?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url: 'https://ohlluu.github.io/Ivy-s-Kitchen/cancel.html',
-                shipping_address_collection: {
-                    allowed_countries: ['US', 'CA']
-                },
-                customer_creation: 'always',
-                phone_number_collection: {
-                    enabled: true
-                }
-            }).then(function (result) {
-                if (result.error) {
-                    // Show error message
-                    showErrorMessage(result.error.message);
-                    button.classList.remove('loading');
-                    button.textContent = originalText;
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-                showErrorMessage('Something went wrong. Please try again.');
+            // For now, show instructions to complete the setup
+            setTimeout(() => {
+                const message = `
+                    <div style="max-width: 500px; margin: 20px auto; padding: 30px; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center;">
+                        <h2 style="color: #6B46C1; margin-bottom: 20px;">Payment Setup Needed</h2>
+                        <p style="color: #64748B; margin-bottom: 15px;">To complete the payment integration, you need to:</p>
+                        <ol style="text-align: left; color: #64748B; margin: 20px 0;">
+                            <li style="margin-bottom: 10px;">Go to <strong>dashboard.stripe.com</strong></li>
+                            <li style="margin-bottom: 10px;">Create a <strong>Payment Link</strong> for $62.99</li>
+                            <li style="margin-bottom: 10px;">Copy the Payment Link URL</li>
+                            <li style="margin-bottom: 10px;">Send me the URL to update the buttons</li>
+                        </ol>
+                        <p style="color: #64748B; margin-top: 20px;"><strong>This takes 2 minutes and your buttons will work perfectly!</strong></p>
+                        <button onclick="this.parentElement.style.display='none'" style="background: #6B46C1; color: white; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 15px; cursor: pointer;">Got it!</button>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', `<div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">${message}</div>`);
+
                 button.classList.remove('loading');
                 button.textContent = originalText;
-            });
+            }, 1000);
         });
     });
 }
