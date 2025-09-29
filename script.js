@@ -207,27 +207,197 @@ document.querySelectorAll('.feature-card, .testimonial, .step, .faq-item').forEa
     observer.observe(el);
 });
 
-// Order button functionality
+// Initialize Stripe
+const stripe = Stripe('pk_live_51S3dDgRw4zEcHSf9D4tZ5fpKSogmyAQzsoYB0PTAvDJCbWbU0oQ86Zn6eJftX9qT9kJnSyaVninTDMEgZ1tHksio00nRSm2K3p');
+
+// Order button functionality with real Stripe integration
 function initOrderButtons() {
     const orderButtons = document.querySelectorAll('.primary-button, .order-button, .final-cta-button, .mobile-cta-button');
 
     orderButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+
             // Add loading state
             this.classList.add('loading');
+            const originalText = this.textContent;
             this.textContent = 'Processing...';
 
-            // Simulate order process (replace with actual order logic)
-            setTimeout(() => {
-                // Remove loading state
-                this.classList.remove('loading');
-                this.textContent = 'Transform Your Life - $60';
-
-                // Show success message (you can replace this with actual order flow)
-                showOrderModal();
-            }, 1500);
+            // Create Stripe checkout session
+            createCheckoutSession()
+                .then(sessionId => {
+                    // Redirect to Stripe checkout
+                    return stripe.redirectToCheckout({ sessionId: sessionId });
+                })
+                .then(result => {
+                    if (result.error) {
+                        // Show error message
+                        showErrorMessage(result.error.message);
+                        this.classList.remove('loading');
+                        this.textContent = originalText;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showErrorMessage('Something went wrong. Please try again.');
+                    this.classList.remove('loading');
+                    this.textContent = originalText;
+                });
         });
     });
+}
+
+// Create Stripe checkout session
+async function createCheckoutSession() {
+    const response = await fetch('./create-checkout-session.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product: 'little_light_adult',
+            quantity: 1
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const session = await response.json();
+    return session.id;
+}
+
+// Show error message
+function showErrorMessage(message) {
+    const errorHTML = `
+        <div class="error-modal-overlay">
+            <div class="error-modal">
+                <div class="error-header">
+                    <h3>Payment Error</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="error-content">
+                    <p>${message}</p>
+                    <p>Please try again or contact support if the problem persists.</p>
+                    <div class="error-buttons">
+                        <button class="retry-button">Try Again</button>
+                        <button class="contact-button">Contact Support</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Add error modal styles
+    const errorStyles = `
+        .error-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .error-modal {
+            background: white;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 80px rgba(239, 68, 68, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        .error-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 2rem 1rem;
+            border-bottom: 1px solid #FEE2E2;
+        }
+
+        .error-header h3 {
+            color: #DC2626;
+            margin: 0;
+        }
+
+        .error-content {
+            padding: 2rem;
+        }
+
+        .error-content p {
+            color: #64748B;
+            margin-bottom: 1rem;
+        }
+
+        .error-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-direction: column;
+        }
+
+        .retry-button {
+            background: linear-gradient(135deg, #6B46C1, #8B5CF6);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .contact-button {
+            background: white;
+            color: #6B46C1;
+            border: 2px solid #6B46C1;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        @media (min-width: 480px) {
+            .error-buttons {
+                flex-direction: row;
+            }
+        }
+    `;
+
+    const errorStyle = document.createElement('style');
+    errorStyle.textContent = errorStyles;
+    document.head.appendChild(errorStyle);
+
+    document.body.insertAdjacentHTML('beforeend', errorHTML);
+    const errorOverlay = document.querySelector('.error-modal-overlay');
+
+    function closeError() {
+        errorOverlay.remove();
+        errorStyle.remove();
+        document.body.style.overflow = '';
+    }
+
+    document.querySelector('.modal-close').addEventListener('click', closeError);
+    document.querySelector('.retry-button').addEventListener('click', closeError);
+
+    document.querySelector('.contact-button').addEventListener('click', function() {
+        window.location.href = 'mailto:hello@thelittlelightfamily.com';
+    });
+
+    errorOverlay.addEventListener('click', function(e) {
+        if (e.target === errorOverlay) {
+            closeError();
+        }
+    });
+
+    document.body.style.overflow = 'hidden';
 }
 
 function showOrderModal() {
