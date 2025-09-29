@@ -207,10 +207,10 @@ document.querySelectorAll('.feature-card, .testimonial, .step, .faq-item').forEa
     observer.observe(el);
 });
 
-// Initialize Stripe using config
-const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+// Initialize Stripe with your publishable key
+const stripe = Stripe('pk_live_51S3dDgRw4zEcHSf9D4tZ5fpKSogmyAQzsoYB0PTAvDJCbWbU0oQ86Zn6eJftX9qT9kJnSyaVninTDMEgZ1tHksio00nRSm2K3p');
 
-// Order button functionality with real Stripe integration
+// Order button functionality - direct Stripe checkout
 function initOrderButtons() {
     const orderButtons = document.querySelectorAll('.primary-button, .order-button, .final-cta-button, .mobile-cta-button');
 
@@ -221,51 +221,47 @@ function initOrderButtons() {
             // Add loading state
             this.classList.add('loading');
             const originalText = this.textContent;
-            this.textContent = 'Processing...';
+            this.textContent = 'Redirecting to checkout...';
 
-            // Create Stripe checkout session
-            createCheckoutSession()
-                .then(sessionId => {
-                    // Redirect to Stripe checkout
-                    return stripe.redirectToCheckout({ sessionId: sessionId });
-                })
-                .then(result => {
-                    if (result.error) {
-                        // Show error message
-                        showErrorMessage(result.error.message);
-                        this.classList.remove('loading');
-                        this.textContent = originalText;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showErrorMessage('Something went wrong. Please try again.');
-                    this.classList.remove('loading');
-                    this.textContent = originalText;
-                });
+            // Direct Stripe checkout - works on GitHub Pages
+            stripe.redirectToCheckout({
+                lineItems: [{
+                    price_data: {
+                        currency: 'usd',
+                        product_data: {
+                            name: 'Little Light Bible Projector - Adult Version',
+                            description: '13 theme-based Bible stories, personal affirmations & prayers + FREE gifts (journal, affirmation cards, sticky notes) for first 200 orders',
+                            images: ['https://ohlluu.github.io/Ivy-s-Kitchen/38F59C79-196C-42CB-8B31-46401F223947.PNG']
+                        },
+                        unit_amount: 6299, // $62.99 in cents
+                    },
+                    quantity: 1,
+                }],
+                mode: 'payment',
+                success_url: 'https://ohlluu.github.io/Ivy-s-Kitchen/success.html?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url: 'https://ohlluu.github.io/Ivy-s-Kitchen/cancel.html',
+                shipping_address_collection: {
+                    allowed_countries: ['US', 'CA']
+                },
+                customer_creation: 'always',
+                phone_number_collection: {
+                    enabled: true
+                }
+            }).then(function (result) {
+                if (result.error) {
+                    // Show error message
+                    showErrorMessage(result.error.message);
+                    button.classList.remove('loading');
+                    button.textContent = originalText;
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                showErrorMessage('Something went wrong. Please try again.');
+                button.classList.remove('loading');
+                button.textContent = originalText;
+            });
         });
     });
-}
-
-// Create Stripe checkout session
-async function createCheckoutSession() {
-    const response = await fetch('./create-checkout-session.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            product: 'little_light_adult',
-            quantity: 1
-        })
-    });
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const session = await response.json();
-    return session.id;
 }
 
 // Show error message
