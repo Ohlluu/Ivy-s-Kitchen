@@ -210,7 +210,7 @@ document.querySelectorAll('.feature-card, .testimonial, .step, .faq-item').forEa
 // Order button functionality - Redirect to Bluevine payment link
 function initOrderButtons() {
     const orderButtons = document.querySelectorAll('.primary-button, .order-button, .final-cta-button, .mobile-cta-button, .cta-button');
-    const paymentLink = 'https://pay.bluevine.com/p/e1a52ef92d424b17938c1dd97ad27d5d/pay/';
+    const paymentLink = 'https://pay.bluevine.com/p/28f6d80b1dd84475867d62e164e61cc3/pay/';
 
     orderButtons.forEach(button => {
         button.addEventListener('click', function(e) {
