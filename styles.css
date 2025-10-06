@@ -1068,6 +1068,18 @@ p {
     max-width: 100%;
 }
 
+.coming-soon-text {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.coming-soon-visual {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
 .coming-soon h2 {
     color: var(--primary-purple);
     margin-bottom: var(--space-lg);
@@ -1091,6 +1103,9 @@ p {
     border-radius: 10px;
     font-weight: 500;
     color: var(--dark-purple);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .kids-icon {
@@ -1140,6 +1155,8 @@ p {
     justify-content: center;
     gap: var(--space-lg);
     font-size: 2rem;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .preview-icons span {
