@@ -1055,6 +1055,8 @@ p {
 .coming-soon {
     padding: var(--space-3xl) 0;
     background: linear-gradient(135deg, var(--light-purple), var(--white));
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .coming-soon-content {
@@ -1062,6 +1064,8 @@ p {
     gap: var(--space-xl);
     align-items: center;
     text-align: center;
+    width: 100%;
+    max-width: 100%;
 }
 
 .coming-soon h2 {
@@ -1073,6 +1077,8 @@ p {
     display: grid;
     gap: var(--space-md);
     margin: var(--space-xl) 0;
+    width: 100%;
+    max-width: 100%;
 }
 
 .kids-feature {
@@ -1117,6 +1123,9 @@ p {
     color: var(--white);
     text-align: center;
     box-shadow: 0 20px 60px rgba(107, 70, 193, 0.3);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .preview-text {
