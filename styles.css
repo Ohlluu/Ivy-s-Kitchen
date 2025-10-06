@@ -292,6 +292,7 @@ p {
 .feature-item {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: var(--space-sm);
     font-weight: 500;
     color: rgba(255, 255, 255, 0.9);
@@ -305,7 +306,7 @@ p {
 
 @media (min-width: 768px) {
     .feature-item {
-        padding: 0.25rem var(--space-3xl);
+        padding: 0.15rem var(--space-xl);
     }
 }
 
