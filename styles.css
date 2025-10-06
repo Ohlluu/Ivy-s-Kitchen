@@ -305,7 +305,7 @@ p {
 
 @media (min-width: 768px) {
     .feature-item {
-        padding: var(--space-xs) var(--space-3xl);
+        padding: 0.25rem var(--space-3xl);
     }
 }
 
