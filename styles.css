@@ -296,11 +296,19 @@ p {
     font-weight: 500;
     color: rgba(255, 255, 255, 0.9);
     background: rgba(255, 255, 255, 0.1);
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-md) var(--space-lg);
     border-radius: 25px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(252, 211, 77, 0.3);
     transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+@media (min-width: 768px) {
+    .feature-item {
+        padding: var(--space-lg) var(--space-xl);
+        font-size: 1.15rem;
+    }
 }
 
 .feature-item:hover {
@@ -310,8 +318,14 @@ p {
 }
 
 .feature-icon {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     animation: twinkle 2s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+    .feature-icon {
+        font-size: 1.8rem;
+    }
 }
 
 .hero-cta {
