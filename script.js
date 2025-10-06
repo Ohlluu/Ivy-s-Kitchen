@@ -653,7 +653,7 @@ function createFloatingStars() {
         star.style.cssText = `
             position: absolute;
             font-size: ${Math.random() * 20 + 10}px;
-            color: rgba(252, 211, 77, ${Math.random() * 0.3 + 0.1});
+            color: rgba(252, 211, 77, ${Math.random() * 0.08 + 0.02});
             pointer-events: none;
             z-index: 3;
             left: ${Math.random() * 100}%;

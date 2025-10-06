@@ -50,6 +50,9 @@ body {
     color: var(--dark-gray);
     font-size: 16px;
     overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
 .container {
@@ -751,13 +754,21 @@ p {
 .pricing-card {
     background: var(--white);
     color: var(--dark-gray);
-    padding: var(--space-3xl);
+    padding: var(--space-lg);
     border-radius: 30px;
     text-align: center;
     position: relative;
     max-width: 800px;
     margin: 0 auto;
     box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .pricing-card {
+        padding: var(--space-3xl);
+    }
 }
 
 .pricing-badge {
@@ -808,7 +819,7 @@ p {
     text-align: left;
     margin: var(--space-xl) 0;
     background: var(--light-gray);
-    padding: var(--space-xl);
+    padding: var(--space-md);
     border-radius: 15px;
     width: 100%;
     margin-left: 0;
@@ -1000,11 +1011,13 @@ p {
 /* Free Gifts Box */
 .free-gifts-box {
     background: linear-gradient(135deg, var(--accent-gold), #FDE68A);
-    padding: var(--space-lg);
+    padding: var(--space-md);
     border-radius: 15px;
     margin-top: var(--space-lg);
+    margin-left: calc(-1 * var(--space-md));
+    margin-right: calc(-1 * var(--space-md));
+    width: calc(100% + 2 * var(--space-md));
     border: 2px solid var(--accent-gold);
-    width: 100%;
     box-sizing: border-box;
 }
 
