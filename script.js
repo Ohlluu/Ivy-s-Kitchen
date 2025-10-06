@@ -207,9 +207,10 @@ document.querySelectorAll('.feature-card, .testimonial, .step, .faq-item').forEa
     observer.observe(el);
 });
 
-// Order button functionality - Contact-based approach for platform-managed Stripe
+// Order button functionality - Redirect to Bluevine payment link
 function initOrderButtons() {
-    const orderButtons = document.querySelectorAll('.primary-button, .order-button, .final-cta-button, .mobile-cta-button');
+    const orderButtons = document.querySelectorAll('.primary-button, .order-button, .final-cta-button, .mobile-cta-button, .cta-button');
+    const paymentLink = 'https://pay.bluevine.com/p/e1a52ef92d424b17938c1dd97ad27d5d/pay/';
 
     orderButtons.forEach(button => {
         button.addEventListener('click', function(e) {
@@ -218,104 +219,12 @@ function initOrderButtons() {
             // Add loading state
             this.classList.add('loading');
             const originalText = this.textContent;
-            this.textContent = 'Opening order form...';
+            this.textContent = 'Redirecting to checkout...';
 
-            // Since your Stripe is platform-managed and Payment Links are disabled,
-            // let's create a simple order form that emails you the details
+            // Redirect to payment link
             setTimeout(() => {
-                const orderForm = `
-                    <div id="orderFormOverlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
-                        <div style="max-width: 500px; width: 100%; background: white; border-radius: 20px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
-                            <div style="text-align: center; margin-bottom: 30px;">
-                                <h2 style="color: #6B46C1; margin-bottom: 10px;">Order Little Light Bible Projector</h2>
-                                <p style="color: #64748B;">$62.99 - Adult Version + FREE Gifts</p>
-                            </div>
-
-                            <form id="orderForm" style="display: flex; flex-direction: column; gap: 15px;">
-                                <input type="text" name="name" placeholder="Full Name *" required style="padding: 12px; border: 2px solid #E5E7EB; border-radius: 8px; font-size: 16px;">
-                                <input type="email" name="email" placeholder="Email Address *" required style="padding: 12px; border: 2px solid #E5E7EB; border-radius: 8px; font-size: 16px;">
-                                <input type="tel" name="phone" placeholder="Phone Number *" required style="padding: 12px; border: 2px solid #E5E7EB; border-radius: 8px; font-size: 16px;">
-                                <textarea name="address" placeholder="Shipping Address *" required style="padding: 12px; border: 2px solid #E5E7EB; border-radius: 8px; font-size: 16px; min-height: 80px; resize: vertical;"></textarea>
-
-                                <div style="background: #F3F4F6; padding: 15px; border-radius: 8px; margin: 10px 0;">
-                                    <h4 style="color: #6B46C1; margin-bottom: 10px;">🎁 FREE Gifts Included:</h4>
-                                    <ul style="color: #64748B; margin: 0; padding-left: 20px;">
-                                        <li>📔 Premium Faith Journal</li>
-                                        <li>💳 Extra Affirmation Cards</li>
-                                        <li>📝 Branded Sticky Note Set</li>
-                                    </ul>
-                                </div>
-
-                                <div style="display: flex; gap: 15px; margin-top: 20px;">
-                                    <button type="submit" style="flex: 1; background: linear-gradient(135deg, #6B46C1, #8B5CF6); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 16px;">
-                                        Submit Order - $62.99
-                                    </button>
-                                    <button type="button" onclick="document.getElementById('orderFormOverlay').remove()" style="background: white; color: #6B46C1; border: 2px solid #6B46C1; padding: 15px 20px; border-radius: 12px; font-weight: 600; cursor: pointer;">
-                                        Cancel
-                                    </button>
-                                </div>
-                            </form>
-
-                            <p style="text-align: center; color: #9CA3AF; font-size: 14px; margin-top: 20px;">
-                                We'll contact you within 24 hours to process payment and shipping.
-                            </p>
-                        </div>
-                    </div>
-                `;
-
-                document.body.insertAdjacentHTML('beforeend', orderForm);
-
-                // Handle form submission
-                document.getElementById('orderForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-
-                    const formData = new FormData(this);
-                    const orderDetails = {
-                        name: formData.get('name'),
-                        email: formData.get('email'),
-                        phone: formData.get('phone'),
-                        address: formData.get('address'),
-                        product: 'Little Light Bible Projector - Adult Version',
-                        price: '$62.99',
-                        timestamp: new Date().toISOString()
-                    };
-
-                    // Create mailto link
-                    const subject = encodeURIComponent('New Order - Little Light Bible Projector');
-                    const body = encodeURIComponent(`
-New Order Details:
-
-Customer: ${orderDetails.name}
-Email: ${orderDetails.email}
-Phone: ${orderDetails.phone}
-Address: ${orderDetails.address}
-
-Product: ${orderDetails.product}
-Price: ${orderDetails.price}
-Includes: Premium Faith Journal, Affirmation Cards, Sticky Notes
-
-Order Time: ${new Date().toLocaleString()}
-
-Please process payment and shipping for this order.
-                    `);
-
-                    const mailtoLink = `mailto:hello@thelittlelightfamily.com?subject=${subject}&body=${body}`;
-                    window.location.href = mailtoLink;
-
-                    // Show confirmation
-                    document.getElementById('orderFormOverlay').innerHTML = `
-                        <div style="max-width: 400px; background: white; border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
-                            <div style="font-size: 4rem; margin-bottom: 20px;">✅</div>
-                            <h2 style="color: #6B46C1; margin-bottom: 15px;">Order Submitted!</h2>
-                            <p style="color: #64748B; margin-bottom: 25px;">Thank you! We'll contact you within 24 hours to process your payment and arrange shipping.</p>
-                            <button onclick="this.closest('#orderFormOverlay').remove()" style="background: #6B46C1; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;">Close</button>
-                        </div>
-                    `;
-                });
-
-                button.classList.remove('loading');
-                button.textContent = originalText;
-            }, 1000);
+                window.location.href = paymentLink;
+            }, 500);
         });
     });
 }
