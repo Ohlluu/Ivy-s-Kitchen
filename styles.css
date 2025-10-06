@@ -1004,6 +1004,8 @@ p {
     border-radius: 15px;
     margin-top: var(--space-lg);
     border: 2px solid var(--accent-gold);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .free-gifts-box h4 {
