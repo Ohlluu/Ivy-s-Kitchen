@@ -135,6 +135,12 @@ p {
     text-decoration: none;
 }
 
+.logo-image {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
 .logo-icon {
     background: linear-gradient(135deg, var(--primary-purple), var(--accent-gold));
     -webkit-background-clip: text;
