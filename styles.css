@@ -330,8 +330,30 @@ p {
 .hero-cta {
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: var(--space-md);
     margin-bottom: var(--space-md);
+    align-items: flex-start;
+}
+
+.prayer-signup-link {
+    color: rgba(255, 255, 255, 0.95);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: var(--space-sm) var(--space-lg);
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(252, 211, 77, 0.4);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.prayer-signup-link:hover {
+    background: rgba(252, 211, 77, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(252, 211, 77, 0.4);
+    border-color: rgba(252, 211, 77, 0.6);
 }
 
 .primary-button {
